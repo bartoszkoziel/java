@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EDIT</title>
+</head>
+
+<body>
+    <div id="list" class="container">
+
+    </div>
+    <script defer>
+        let tBlist = document.getElementById("list")
+
+        async function main() {
+            let list = await fetch("/json")
+            list = await list.text()
+            console.log(list);
+            console.log(list)
+        }
+
+        main()
+
+    </script>
+</body>
+
+</html>

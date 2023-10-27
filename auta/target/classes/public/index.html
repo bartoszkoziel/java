@@ -10,8 +10,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <a>INDEX</a>
-            <a>edit/update</a>
+            <a href="/">INDEX</a>
+            <a href="/edit.html">edit/update</a>
         </div>
 
         <div class="main">
@@ -90,7 +90,7 @@
                 let restext = await response.json()
                 console.log(restext)
                 alert(JSON.stringify(restext, null, 4))
-                // return await response.json() // response.json
+                window.location.href = "/edit.html";
             }
 
 
