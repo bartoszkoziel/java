@@ -2,12 +2,16 @@ package org.example;
 
 
 import static spark.Spark.*;
+
+import com.fasterxml.uuid.Generators;
 import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import org.example.Car;
 import org.example.Airbag;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.UUID;
 
 public class Main {
     private static ArrayList<Car> carlist = new ArrayList<Car>();
@@ -34,9 +38,14 @@ public class Main {
     static String handleAdd(Request req, Response res) {
         String responsetext = req.body();
         System.out.println("RESPONSETEXT: " + responsetext);
-
         Gson gson = new Gson();
+
         Car car = gson.fromJson(responsetext, Car.class);
+
+        String uuid = Generators.randomBasedGenerator().generate().toString();
+        car.setUuid(uuid);
+
+        System.out.println(car);
 
         ArrayList<Car> temp = getCarlist();
         temp.add(car);

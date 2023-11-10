@@ -4,20 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <title>EDIT</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
-    <div id="list" class="container">
+
+    <div class="container">
+        <div class="header">
+            <a href="/">INDEX</a>
+            <a href="/edit.html">edit/update</a>
+        </div>
+
+        <div class="main">
+            <div id="list" class="container">
+                <table id="tblList" border="1"></table>
+            </div>
+        </div>
+
 
     </div>
     <script defer>
-        let tBlist = document.getElementById("list")
+        let tblList = document.getElementById("tblList")
 
         async function main() {
             let list = await fetch("/json")
             list = await list.text()
-            console.log(list);
-            console.log(list)
+            list = JSON.parse(list);
+
+            list.forEach((el, index) => {
+                let tr = document.createElement("tr")
+                let td = document.createElement("td")
+                td.innerHTML = index
+                tr.append(td)
+
+                td = document.createElement("td")
+                td.innerHTML = el.uuid
+                tr.append(td)
+
+                td = document.createElement("td")
+                td.innerHTML = el.model
+
+
+
+                tblList.append(tr)
+            });
+
+
         }
 
         main()
