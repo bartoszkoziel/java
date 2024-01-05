@@ -17,3 +17,9 @@ body {
     height: 2em;
     width: 100%;
 }
+
+.color {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

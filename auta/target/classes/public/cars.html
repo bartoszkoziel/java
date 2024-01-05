@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EDIT</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <a href="/">INDEX</a>
+            <a href="/edit.html">edit/update</a>
+        </div>
+
+        <div class="main">
+            <div id="list" class="container">
+                <table id="tblList" border="1"></table>
+            </div>
+        </div>
+
+
+    </div>
+    <script defer>
+        let tblList = document.getElementById("tblList")
+
+        async function main() {
+            let list = await fetch("/json")
+            list = await list.text()
+            list = JSON.parse(list);
+
+            list.forEach((el, index) => {
+                let tr = document.createElement("tr")
+                let td = document.createElement("td")
+                td.innerHTML = index
+                tr.append(td)
+
+                td = document.createElement("td")
+                td.innerHTML = el.uuid
+                tr.append(td)
+
+                td = document.createElement("td")
+                td.innerHTML = el.model
+                tr.append(td)
+
+                td = document.createElement("td")
+                td.innerHTML = el.rok
+                tr.append(td)
+
+                td = document.createElement("td")
+                let p1 = document.createElement("p")
+                p1.innerHTML = "kierowca: " + el.airbags[0].value
+                td.append(p1)
+                let p2 = document.createElement("p")
+                p2.innerHTML = "pasazer: " + el.airbags[1].value
+                td.append(p2)
+                let p3 = document.createElement("p")
+                p3.innerHTML = "kanapa: " + el.airbags[2].value
+                td.append(p3)
+                let p4 = document.createElement("p")
+                p4.innerHTML = "boczne: " + el.airbags[3].value
+                td.append(p4)
+                tr.append(td)
+
+                td = document.createElement("td")
+                div = document.createElement("div")
+                div.className = "color"
+                div.style.width = "100px"
+                div.style.height = "100px"
+                div.style.background = el.color
+                console.log(el.color);
+                td.append(div)
+                tr.append(td)
+
+
+                tblList.append(tr)
+            });
+
+
+        }
+
+        main()
+
+    </script>
+</body>
+
+</html>
