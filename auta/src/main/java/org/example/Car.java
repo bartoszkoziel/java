@@ -12,6 +12,18 @@ class Car{
         this.uuid = uuid;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setRok(int rok) {
+        this.rok = rok;
+    }
+
     @Override
     public String toString() {
         return "Car{" +

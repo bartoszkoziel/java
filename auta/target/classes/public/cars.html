@@ -2,88 +2,155 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>EDIT</title>
-    <link rel="stylesheet" href="/styles.css">
+  <meta charset="UTF-8">
+  <title>EDIT</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
 
-    <div class="container">
-        <div class="header">
-            <a href="/">INDEX</a>
-            <a href="/edit.html">edit/update</a>
-        </div>
-
-        <div class="main">
-            <div id="list" class="container">
-                <table id="tblList" border="1"></table>
-            </div>
-        </div>
-
-
+  <div class="container">
+    <div class="header">
+      <a href="/">INDEX</a>
+      <a href="/edit.html">edit/update</a>
+      <a href="/admin.html">generate invoice</a>
     </div>
-    <script defer>
-        let tblList = document.getElementById("tblList")
 
-        async function main() {
-            let list = await fetch("/json")
-            list = await list.text()
-            list = JSON.parse(list);
-
-            list.forEach((el, index) => {
-                let tr = document.createElement("tr")
-                let td = document.createElement("td")
-                td.innerHTML = index
-                tr.append(td)
-
-                td = document.createElement("td")
-                td.innerHTML = el.uuid
-                tr.append(td)
-
-                td = document.createElement("td")
-                td.innerHTML = el.model
-                tr.append(td)
-
-                td = document.createElement("td")
-                td.innerHTML = el.rok
-                tr.append(td)
-
-                td = document.createElement("td")
-                let p1 = document.createElement("p")
-                p1.innerHTML = "kierowca: " + el.airbags[0].value
-                td.append(p1)
-                let p2 = document.createElement("p")
-                p2.innerHTML = "pasazer: " + el.airbags[1].value
-                td.append(p2)
-                let p3 = document.createElement("p")
-                p3.innerHTML = "kanapa: " + el.airbags[2].value
-                td.append(p3)
-                let p4 = document.createElement("p")
-                p4.innerHTML = "boczne: " + el.airbags[3].value
-                td.append(p4)
-                tr.append(td)
-
-                td = document.createElement("td")
-                div = document.createElement("div")
-                div.className = "color"
-                div.style.width = "100px"
-                div.style.height = "100px"
-                div.style.background = el.color
-                console.log(el.color);
-                td.append(div)
-                tr.append(td)
+    <div class="main">
+      <div id="list" class="container">
+        <table id="tblList" border="1"></table>
+      </div>
+    </div>
 
 
-                tblList.append(tr)
-            });
+  </div>
 
+  <dialog id="myDialog">
+    <p>Update current car</p>
 
+    <input type="text" id="tbModel" />
+    <input type="number" id="tbRok" />
+
+    <button id="closeDialog">Close</button>
+    <button id="btnSubmitUpdate">Submit update</button>
+  </dialog>
+
+  <script defer>
+    const myDialog = document.getElementById('myDialog');
+    let tblList = document.getElementById("tblList")
+
+    async function main() {
+      let list = await fetch("/json")
+      list = await list.text()
+      list = JSON.parse(list);
+
+      list.forEach((el, index) => {
+        let tr = document.createElement("tr")
+        let td = document.createElement("td")
+        td.innerHTML = index
+        tr.append(td)
+
+        td = document.createElement("td")
+        td.innerHTML = el.uuid
+        tr.append(td)
+
+        td = document.createElement("td")
+        td.innerHTML = el.model
+        tr.append(td)
+
+        td = document.createElement("td")
+        td.innerHTML = el.rok
+        tr.append(td)
+
+        td = document.createElement("td")
+        let p1 = document.createElement("p")
+        p1.innerHTML = "kierowca: " + el.airbags[0].value
+        td.append(p1)
+        let p2 = document.createElement("p")
+        p2.innerHTML = "pasazer: " + el.airbags[1].value
+        td.append(p2)
+        let p3 = document.createElement("p")
+        p3.innerHTML = "kanapa: " + el.airbags[2].value
+        td.append(p3)
+        let p4 = document.createElement("p")
+        p4.innerHTML = "boczne: " + el.airbags[3].value
+        td.append(p4)
+        tr.append(td)
+
+        td = document.createElement("td")
+        div = document.createElement("div")
+        div.className = "color"
+        div.style.width = "100px"
+        div.style.height = "100px"
+        div.style.background = el.color
+        console.log(el.color);
+        td.append(div)
+        tr.append(td)
+
+        td = document.createElement("td")
+        btnDelete = document.createElement("button")
+        btnDelete.innerHTML = "DELETE"
+        btnDelete.onclick = () => {
+          console.log("DELETE");
+          fetch("/delete", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ uuid: el.uuid }),
+          }).then(response => {
+            if (response.ok) {
+              location.reload()
+            }
+          })
         }
+        td.append(btnDelete)
+        tr.append(td)
 
-        main()
+        td = document.createElement("td")
+        btnUpdate = document.createElement("button")
+        btnUpdate.innerHTML = "UPDATE"
+        btnUpdate.onclick = () => {
+          console.log("UPDATE")
+          document.getElementById("btnSubmitUpdate").onclick = () => {
+            fetch("/update", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                uuid: el.uuid,
+                newModel: document.getElementById("tbModel").value,
+                newRok: document.getElementById("tbRok").value
+              }),
+            }).then(response => {
+              if (response.ok) {
+                location.reload()
+              }
+            })
+          }
+          myDialog.showModal();
+        }
+        td.append(btnUpdate)
+        tr.append(td)
 
-    </script>
+
+        tblList.append(tr)
+      });
+
+
+    }
+
+    // const myDialog = document.getElementById('myDialog');
+    const closeDialogButton = document.getElementById('closeDialog');
+
+    closeDialogButton.addEventListener('click', () => {
+      myDialog.close();
+    });
+
+    main()
+
+  </script>
 </body>
 
 </html>

@@ -2,103 +2,104 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>MAIN PAGE</title>
-    <link rel="stylesheet" href="/styles.css">
+  <meta charset="UTF-8">
+  <title>MAIN PAGE</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <a href="/">INDEX</a>
-            <a href="/cars.html">edit/update</a>
-        </div>
-
-        <div class="main">
-            <div class="right">
-                <button id="btnAdd">DODAJ</button>
-            </div>
-            <div class="left">
-                <p>
-                    <input id="tbModel" type="text">
-                    model
-                </p>
-
-                <p>
-                    <input id="tbRok" type="number">
-                    rok
-                </p>
-
-                <p>
-                    <input id="pKierowca" type="checkbox" value="airbag1">
-                    <input id="pPasazer" type="checkbox" value="airbag2">
-                    <input id="pKanapa" type="checkbox" value="airbag3">
-                    <input id="pBoczne" type="checkbox" value="airbag4">
-                    poduszki
-                </p>
-
-                <p>
-                    <input id="color" type="color">
-                    kolor
-                </p>
-            </div>
-        </div>
+  <div class="container">
+    <div class="header">
+      <a href="/">INDEX</a>
+      <a href="/cars.html">edit/update</a>
+      <a href="/admin.html">generate invoice</a>
     </div>
 
-    <script>
-        let fetchPostAsync = async () => {
+    <div class="main">
+      <div class="right">
+        <button id="btnAdd">DODAJ</button>
+      </div>
+      <div class="left">
+        <p>
+          <input id="tbModel" type="text">
+          model
+        </p>
 
-            let airbags = [
-                {
-                    description: "kierowca",
-                    value: document.getElementById("pKierowca").checked
-                },
-                {
-                    description: "pasazer",
-                    value: document.getElementById("pPasazer").checked
-                },
-                {
-                    description: "kanapa",
-                    value: document.getElementById("pKanapa").checked
-                },
-                {
-                    description: "boczne",
-                    value: document.getElementById("pBoczne").checked
-                },
-            ]
+        <p>
+          <input id="tbRok" type="number">
+          rok
+        </p>
+
+        <p>
+          <input id="pKierowca" type="checkbox" value="airbag1">
+          <input id="pPasazer" type="checkbox" value="airbag2">
+          <input id="pKanapa" type="checkbox" value="airbag3">
+          <input id="pBoczne" type="checkbox" value="airbag4">
+          poduszki
+        </p>
+
+        <p>
+          <input id="color" type="color">
+          kolor
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let fetchPostAsync = async () => {
+
+      let airbags = [
+        {
+          description: "kierowca",
+          value: document.getElementById("pKierowca").checked
+        },
+        {
+          description: "pasazer",
+          value: document.getElementById("pPasazer").checked
+        },
+        {
+          description: "kanapa",
+          value: document.getElementById("pKanapa").checked
+        },
+        {
+          description: "boczne",
+          value: document.getElementById("pBoczne").checked
+        },
+      ]
 
 
-            const data = JSON.stringify({
-                model: document.getElementById("tbModel").value,
-                rok: document.getElementById("tbRok").value,
-                airbags: airbags,
-                color: document.getElementById("color").value
-            })
+      const data = JSON.stringify({
+        model: document.getElementById("tbModel").value,
+        rok: document.getElementById("tbRok").value,
+        airbags: airbags,
+        color: document.getElementById("color").value
+      })
 
-            const options = {
-                method: "POST",
-                body: data,
-            };
+      const options = {
+        method: "POST",
+        body: data,
+      };
 
-            console.log(data)
+      console.log(data)
 
-            let response = await fetch("/add", options)
+      let response = await fetch("/add", options)
 
-            if (!response.ok)
-                return response.status
-            else {
-                let restext = await response.json()
-                console.log(restext)
-                alert(JSON.stringify(restext, null, 4))
-                window.location.href = "/cars.html";
-            }
+      if (!response.ok)
+        return response.status
+      else {
+        let restext = await response.json()
+        console.log(restext)
+        alert(JSON.stringify(restext, null, 4))
+        window.location.href = "/cars.html";
+      }
 
 
-        }
+    }
 
-        document.getElementById("btnAdd").addEventListener("click", fetchPostAsync)
+    document.getElementById("btnAdd").addEventListener("click", fetchPostAsync)
 
-    </script>
+  </script>
 </body>
 
 </html>
