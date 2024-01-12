@@ -3,12 +3,11 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>EDIT</title>
+  <title>MAIN PAGE</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
-
   <div class="container">
     <div class="header">
       <a href="/">INDEX</a>
@@ -18,27 +17,23 @@
     </div>
 
     <div class="main">
+      <div class="right">
+        <a href="/getall">Pobierz Wszystko</a>
+      </div>
       <div id="list" class="container">
         <table id="tblList" border="1"></table>
       </div>
+      <div class="left">
+
+      </div>
     </div>
-
-
   </div>
 
-  <dialog id="myDialog">
-    <p>Update current car</p>
-
-    <input type="text" id="tbModel" />
-    <input type="number" id="tbRok" />
-
-    <button id="closeDialog">Close</button>
-    <button id="btnSubmitUpdate">Submit update</button>
-  </dialog>
-
   <script defer>
-    const myDialog = document.getElementById('myDialog');
+    const bazaaut = ["Audi", "BMW", "Fiat", "Honda", "Ford"]
+
     let tblList = document.getElementById("tblList")
+    let btnDownload = document.getElementById("btnDownloadAll")
 
     async function main() {
       let list = await fetch("/json")
@@ -88,70 +83,19 @@
         td.append(div)
         tr.append(td)
 
-        td = document.createElement("td")
-        btnDelete = document.createElement("button")
-        btnDelete.innerHTML = "DELETE"
-        btnDelete.onclick = () => {
-          console.log("DELETE");
-          fetch("/delete", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ uuid: el.uuid }),
-          }).then(response => {
-            if (response.ok) {
-              location.reload()
-            }
-          })
-        }
-        td.append(btnDelete)
-        tr.append(td)
-
-        td = document.createElement("td")
-        btnUpdate = document.createElement("button")
-        btnUpdate.innerHTML = "UPDATE"
-        btnUpdate.onclick = () => {
-          console.log("UPDATE")
-          document.getElementById("btnSubmitUpdate").onclick = () => {
-            fetch("/update", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                uuid: el.uuid,
-                newModel: document.getElementById("tbModel").value,
-                newRok: document.getElementById("tbRok").value
-              }),
-            }).then(response => {
-              if (response.ok) {
-                location.reload()
-              }
-            })
-          }
-          myDialog.showModal();
-        }
-        td.append(btnUpdate)
-        tr.append(td)
-
-
         tblList.append(tr)
       });
-
-
     }
 
-    // const myDialog = document.getElementById('myDialog');
-    const closeDialogButton = document.getElementById('closeDialog');
-
-    closeDialogButton.addEventListener('click', () => {
-      myDialog.close();
-    });
+    function bintobool(num) {
+      if (num == 1) return true
+      else return false
+    }
 
     main()
 
   </script>
+
 </body>
 
 </html>
