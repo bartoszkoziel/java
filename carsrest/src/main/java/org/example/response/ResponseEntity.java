@@ -1,13 +1,17 @@
 package org.example.response;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 public class ResponseEntity {
     private String status; // SUCCESS, ERROR, INNE
     private String message; // komunikat tekstowy
-    private String data; // dane json pobrane z mapy
+    private JsonElement data; // dane json pobrane z mapy
 
-    public ResponseEntity(String message, String status, String data) {
+    public ResponseEntity(String message, String status, JsonElement data) {
+
+        Gson gson = new Gson();
+
         this.status = status;
         this.message = message;
         this.data = data;

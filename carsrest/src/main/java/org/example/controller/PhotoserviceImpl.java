@@ -9,7 +9,9 @@ import spark.Request;
 import spark.Response;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,9 +23,10 @@ public class PhotoserviceImpl implements Photoservice {
     @Override
     public String getPhotos() {
         photosMap = createPhotosMap();
-        Gson gson = new Gson();
-        Type listType = new TypeToken<Map<String, Photo>>() {}.getType();
-        String jsonString = gson.toJson(photosMap, listType);
+        Gson gson = new GsonBuilder()
+                .create();
+        Type listType = new TypeToken<HashMap<String, Photo>>() {}.getType();
+        String jsonString = gson.toJson(photosMap);
 
         System.out.println("HERE: " + jsonString);
 
@@ -104,6 +107,16 @@ public class PhotoserviceImpl implements Photoservice {
         }
 
         return false;
+    }
+    public String getPathById(String id){
+        photosMap = createPhotosMap();
+
+        if (photosMap.get(id) == null) {
+            return "";
+        }
+
+        String carName = photosMap.get(id).getName();
+        return System.getProperty("user.dir") + "\\src\\main\\resources\\public\\" + carName;
     }
 
     public static Map<String, Photo> createPhotosMap() {
